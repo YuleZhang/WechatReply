@@ -6,12 +6,14 @@ import datetime
 import itchat
 import time
 import json
+HEALTH_STATU = '健康'
+CONTACK_STATU = '接触'
 
-cnt = 0            #计数器统计人数
-group_name = '计163的新芽们'
-group_num = ''     #群编号，通过群编号来区分不同群的消息
-group_user_name = ''   #username,用来标记群
-member_checked = {} #已签到成员字典
+cnt = 0                      #计数器统计人数
+group_name = '计163的新芽们'  #群名称
+group_num = ''               #群编号，通过群编号来区分不同群的消息
+group_user_name = ''         #群username,用来标记群,从而确定发消息对象
+member_checked = {}          #已签到成员字典
 
 def time_stat(stuInfo):
     '''定时统计线程执行体'''
@@ -86,7 +88,7 @@ def print_content(msg):
     '''监听群消息记录，自动回复签到情况'''
     global cnt
     if msg['FromUserName'] == groupNum or msg['ToUserName'] == groupNum:
-        if msg['Text'].find('健康') != -1 or msg['Text'].find('接触') != -1:
+        if msg['Text'].find(HEALTH_STATU) != -1 or msg['Text'].find(CONTACK_STATU) != -1:
             cnt += 1
             print("该群发的消息为： "+msg['Text'])     #打印哪个群给你发了什么消息
             reply = msg['ActualNickName']+'签到成功，'+"目前已成功签到%d人\n"%cnt
@@ -125,7 +127,7 @@ def init_group_member(group_info):
 def tmp_init():
     '''临时断线调整'''
     global cnt
-    strs = "张宇   王含艺   吴昊航   朱楠   孙雅琴   黄成   吴翰霖   王宝佳   赵伟阳   邵鸿博   吴京缘   葛天宇   胡名洋   于纯核   李明芳   余远岚   季杨   张浩伦   周子益   郝城泽   刘佳黛   连子峰   李冰洁   王霏儿   姜北   褚洪锋   郭宇轩   滕博   李昱   方守业"
+    strs = "张宇   王含艺"
     datas = strs.split("   ")
     for n in datas:
         member_checked[n] = 1
@@ -134,7 +136,7 @@ def tmp_init():
     print(member_checked)
 
 if __name__ == '__main__':
-    tmp_init()
+    #tmp_init()
     print('————————————————————自动回复程序启动——————————————————')
     itchat.auto_login()
     group_json_data = get_group_info()
