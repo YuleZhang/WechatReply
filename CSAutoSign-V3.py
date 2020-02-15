@@ -36,7 +36,7 @@ def time_stat(stuInfo):
                     to_group = g['UserName']
                     itchat.send(ans,to_group)
                     print ("send ok!")
-        elif cur_time == "07:00":
+        elif cur_time == "07:30":
             #重新开始，清空变量
             cnt = 0
             get_group_info() #更新groupNum
@@ -136,10 +136,18 @@ def tmp_init():
     print('初始化结果为%d人'%cnt)
     print(member_checked)
 
+# 解决wechat自动logout问题，https://github.com/littlecodersh/ItChat/issues/448
+def login_callback():
+    print('Login successfully!')
+
+def logout_callback():
+    print('logout')
+    itchat.auto_login(hotReload=True, loginCallback=login_callback, exitCallback=logout_callback)
+
 if __name__ == '__main__':
     #tmp_init()
     print('————————————————————自动回复程序启动——————————————————')
-    itchat.auto_login()
+    itchat.auto_login(hotReload=True,loginCallback=login_callback, exitCallback=logout_callback)
     group_json_data = get_group_info()
     stu_info = init_group_member(group_json_data)
     thr_update = threading.Thread(target=update_group_num)
