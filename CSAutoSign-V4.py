@@ -29,8 +29,7 @@ def time_stat(stuInfo):
             if '张宇' in l:
                 l.remove('张宇')
             ans = "还有%d人未签到，他们分别是"%len(l)
-            for i in l:
-                ans += i + '  '
+            ans += '   '.join(l)
             writeLog('ans     : '+ans)
             for g in groups:
                 if g['NickName'] == group_name:
@@ -104,13 +103,10 @@ def print_content(msg):
             member_checked[msg['ActualNickName']]=1
             writeLog("回复内容为: " + reply)
             writeLog("当前已签到成员为：")
-            ans = ''
-            for i in member_checked:
-                ans+=i+'   '
-            writeLog(ans)#换行
+            writeLog(str(member_checked))#换行
             return reply
     else:           
-        writeLog("不是该群消息")
+        #writeLog("不是该群消息")
         pass
 
 def init_group_member(group_info):
@@ -124,8 +120,9 @@ def init_group_member(group_info):
             stu.append(person['DisplayName'])
     if '张宇' not in stu:
         stu.append('张宇')
-    writeLog(len(stu))
-    writeLog(stu)
+    ans = '初始化%d人，它们分别是'%len(stu)
+    ans += '   '.join(stu)
+    writeLog(ans)
     return stu
 
 def tmp_init():

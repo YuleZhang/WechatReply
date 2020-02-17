@@ -18,9 +18,8 @@ def writeLog(message):
     console.setFormatter(formatter)
     logger.addHandler(console)
     logging.info(message)
-
-
-
+    logger.removeHandler(handler)
+    #存到文件中
     logger.addHandler(handler)
     logger.setLevel(logging.INFO )
     logger.info(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+':'+message)
